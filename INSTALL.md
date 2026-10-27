@@ -56,8 +56,8 @@ Besides what building Limine needs, the checks need:
   `qemu-system-aarch64`, `qemu-system-riscv64`, and `qemu-system-loongarch64`
   for the other UEFI ports;
 - `mtools` and `xorriso`, which make the disk and CD images;
-- `swtpm`, for the TPM checks; and `openssl` and `virt-fw-vars` (from
-  `virt-firmware`), for the UEFI variable stores and Secure Boot keys;
+- `swtpm`, for the TPM checks; and `openssl`, for the Secure Boot keys and
+  signatures;
 - `curl`, `gunzip`, and `tar`, to download and unpack the UEFI firmware;
 - `ps`, to find the `-j` option `make check` was run with;
 - for coverage reports, `clang`, `llvm-objdump`, `llvm-symbolizer`,
