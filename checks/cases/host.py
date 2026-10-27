@@ -2,7 +2,7 @@ import hashlib
 import shutil
 import subprocess
 
-from harness.api import test
+from harness.api import check
 from harness.media import Disk, Fat, HostFile, Part, Tree, BIOS_BOOT_TYPE, ESP_TYPE
 from harness.report import unescape
 from cases._common import entry, kernel_file, limine_version, screen_text, wait_panic
@@ -32,7 +32,7 @@ def read(path):
         return f.read()
 
 
-@test(ports=['bios'], tags=['host'])
+@check(ports=['bios'], tags=['host'])
 def host_bios_install_mbr(t):
     """bios-install makes an MBR disk boot, leaves its partition table and
     disk signature be, and --uninstall restores every byte it changed."""
@@ -52,7 +52,7 @@ def host_bios_install_mbr(t):
     t.check(read(disk.path) == before, 'the disk is as it was before the install')
 
 
-@test(ports=['bios'], tags=['host'])
+@check(ports=['bios'], tags=['host'])
 def host_bios_install_active_flag(t):
     """[intent] With no active partition, partition 1 is made active."""
     tree = kernel_tree(t)
@@ -75,7 +75,7 @@ def gpt_disk(t, name, bios_boot=True):
     return t.path(name)
 
 
-@test(ports=['bios'], tags=['host'])
+@check(ports=['bios'], tags=['host'])
 def host_bios_install_gpt(t):
     """On GPT the boot code goes in the BIOS boot partition, named by index
     or, without one, found by its type; nothing else will do."""
@@ -96,7 +96,7 @@ def host_bios_install_gpt(t):
     t.check(code != 0 and 'no BIOS boot partition specified or' in err, f'[intent] refused: {err!r}')
 
 
-@test(ports=['bios'], tags=['host'])
+@check(ports=['bios'], tags=['host'])
 def host_cli(t):
     """Usage, version and the --quiet and --uninstall guard rails."""
     code, out, err = limine(t, '--help')
@@ -124,7 +124,7 @@ def enroll(t, efi, data, *extra):
     return limine(t, 'enroll-config', efi, hashlib.blake2b(data).hexdigest(), *extra)
 
 
-@test(ports=['uefi-x86-64', 'bios'], tags=['host'])
+@check(ports=['uefi-x86-64', 'bios'], tags=['host'])
 def host_enroll_config(t):
     """enroll-config writes a config hash into Limine; the config must then
     match it, and the editor is off by default; --reset takes it out."""
